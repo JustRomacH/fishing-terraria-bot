@@ -66,7 +66,7 @@ class FishBot:
     def fish(self) -> None:
         try:
             print("Начало через 10 сек")
-            sleep(5)
+            sleep(10)
             self.click()
             sleep(0.75)
 
