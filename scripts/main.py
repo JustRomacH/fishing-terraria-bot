@@ -4,14 +4,14 @@ import pyautogui as pygui
 from mss import mss
 from sys import exit
 from time import sleep
-from dots import dots_dict
+from rods import rods_dict
 
 
 class FishBot:
-    def __init__(self, dot: str) -> None:
+    def __init__(self, rod: str) -> None:
         self.IMG_SIZE = 80
         self.sct = mss()
-        self.dot = dots_dict[dot.lower().capitalize()]
+        self.rod = rods_dict[rod.lower().capitalize()]
         self.prev = 0
         self.hsv = None
         self.mask = None
@@ -41,23 +41,23 @@ class FishBot:
 
     # Creates mask for hsv image
     def create_mask(self) -> None:
-        match len(self.dot):
+        match len(self.rod):
             case 2:
                 # If float have only 1 color
-                lower_bound = np.array(self.dot[0])
-                upper_bound = np.array(self.dot[1])
+                lower_bound = np.array(self.rod[1])
+                upper_bound = np.array(self.rod[0])
 
                 self.mask = cv2.inRange(self.hsv, lower_bound, upper_bound)
 
             case 4:
                 # If float have 2 colors
-                lower_bound = np.array(self.dot[0])
-                upper_bound = np.array(self.dot[1])
+                lower_bound = np.array(self.rod[1])
+                upper_bound = np.array(self.rod[0])
                 mask1 = cv2.inRange(
                     self.hsv, lower_bound, upper_bound)
 
-                lower_bound = np.array(self.dot[2])
-                upper_bound = np.array(self.dot[3])
+                lower_bound = np.array(self.rod[3])
+                upper_bound = np.array(self.rod[2])
                 mask2 = cv2.inRange(
                     self.hsv, lower_bound, upper_bound)
 
@@ -66,7 +66,7 @@ class FishBot:
     def fish(self) -> None:
         try:
             print("Начало через 10 сек")
-            sleep(10)
+            sleep(5)
             self.click()
             sleep(0.75)
 
@@ -91,17 +91,17 @@ class FishBot:
             exit()
 
 
-# Print full list of dots
-def list_of_dots() -> str:
+# Print full list of rods
+def list_of_rods() -> str:
     print("Список всех удочек: ")
-    for i, dot in enumerate(dots_dict.keys()):
-        print(f"{i+1}. {dot}")
+    for i, rod in enumerate(rods_dict.keys()):
+        print(f"{i+1}. {rod}")
 
     dot = input("\nКакая у тебя >>> ")
     return dot
 
 
 if __name__ == "__main__":
-    dot = list_of_dots()
-    bot = FishBot(dot)
+    rod = list_of_rods()
+    bot = FishBot(rod)
     bot.fish()
